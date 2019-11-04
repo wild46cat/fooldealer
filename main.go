@@ -1,4 +1,4 @@
-package fooldealer
+package main
 
 import "fooldealer/socket"
 
