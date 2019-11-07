@@ -3,6 +3,7 @@ package socket
 import (
 	"bytes"
 	"fmt"
+	"fooldealer/src/dispatcher"
 	"net"
 	"strconv"
 )
@@ -28,6 +29,7 @@ func handleConnection(conn net.Conn) {
 	//conn.Write([]byte("hello,client \r\n"))
 	defer conn.Close()
 	var lastBytes []byte
+	ch := make(chan string)
 	for {
 		//处理粘包半包问题
 		data := bytes.NewBuffer(make([]byte, BUFFER_SIZE))
@@ -45,10 +47,29 @@ func handleConnection(conn net.Conn) {
 				continue
 			} else {
 				for _, message := range messageInfos {
-					fmt.Println(message.body)
+					//待优化
+					go sendMessage(ch, message.body)
+					go handleMessage(ch, conn)
 				}
 				lastBytes = preBytes
 			}
+		}
+	}
+}
+
+func sendMessage(ch chan string, message string) {
+	ch <- message
+}
+
+func handleMessage(ch chan string, conn net.Conn) {
+	for {
+		message := <-ch
+		//业务逻辑匹配处理
+		res, err := dispatcher.Dispatch(message)
+		if err != nil {
+			fmt.Println(err.Error())
+		} else {
+			conn.Write(ConvertToBytes(res))
 		}
 	}
 }

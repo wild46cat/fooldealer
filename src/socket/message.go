@@ -6,7 +6,7 @@ import (
 	"errors"
 )
 
-const BUFFER_SIZE = 512
+const BUFFER_SIZE = 1024
 const HEAD_SIZE = 4
 
 /**
