@@ -1,12 +1,9 @@
 package socket
 
 import (
-	"bufio"
 	"fmt"
-	"fooldealer/src/dispatcher"
 	"net"
 	"strconv"
-	"time"
 )
 
 func ClientStart(ip string, port int) {
@@ -22,20 +19,20 @@ func ClientStart(ip string, port int) {
 
 func clientHandle(conn net.Conn) {
 	//str := "abc"
-	str := dispatcher.GenerateTestJson("ROOM_INFO_REQUESTaa", 6)
-	defer conn.Close()
-	fmt.Println("client begin handle")
-	for {
-		time.Sleep(time.Duration(1) * time.Second)
-		conn.Write(ConvertToBytes(str))
-		recv_data := make([]byte, 1024)
-		n, err := bufio.NewReader(conn).Read(recv_data)
-		if n == 0 || err != nil {
-			fmt.Println(err)
-			continue
-		} else {
-			//先简单处理，后期优化
-			fmt.Println(string(recv_data[4:n]))
-		}
-	}
+	//str := dispatcher.GenerateTestJson("ROOM_INFO_REQUESTaa", 6)
+	//defer conn.Close()
+	//fmt.Println("client begin handle")
+	//for {
+	//	time.Sleep(time.Duration(1) * time.Second)
+	//	conn.Write(ConvertToBytes(str))
+	//	recv_data := make([]byte, 1024)
+	//	n, err := bufio.NewReader(conn).Read(recv_data)
+	//	if n == 0 || err != nil {
+	//		fmt.Println(err)
+	//		continue
+	//	} else {
+	//		//先简单处理，后期优化
+	//		fmt.Println(string(recv_data[4:n]))
+	//	}
+	//}
 }
